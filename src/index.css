@@ -1,0 +1,35 @@
+:root {
+  --color-bg: #EFE9E0;
+  --color-card: #FBF8F3;
+  --color-text: #2F3A34;
+  --color-text-muted: #4E5A52;
+  --color-text-faint: #8C857A;
+  --color-text-faintest: #A29A8E;
+  --color-accent: #3F7F6C;
+  --color-accent-hover: #356B5C;
+  --color-accent-sub: #E8A87C;
+  --color-tag-bg: #F2EDE4;
+  --color-question-bg: #FDF6EE;
+  --font-heading: 'Zen Maru Gothic', sans-serif;
+  --font-body: 'Zen Kaku Gothic New', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+textarea, input, button { font-family: inherit; }
+::placeholder { color: var(--color-text-faintest); }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

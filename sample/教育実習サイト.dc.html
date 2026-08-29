@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #EFE9E0; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #3F7F6C; text-decoration: none; }
+  a:hover { color: #2E5F51; text-decoration: underline; }
+  textarea, input, button { font-family: inherit; }
+  ::placeholder { color: #A8A196; }
+</style>
+</helmet>
+
+<section style="padding: 56px 48px 80px; font-family: 'Zen Kaku Gothic New', system-ui, sans-serif; color: #2F3A34;">
+  <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 44px;">
+    <span style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; letter-spacing: .14em; color: #3F7F6C;">EDUCATION PRACTICUM SITE — MOCKUP</span>
+    <h1 style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 34px; font-weight: 700; margin: 0; letter-spacing: .01em;">教育実習 自己紹介 &amp; 質問箱</h1>
+    <p style="margin: 0; font-size: 15px; color: #6B6459; max-width: 620px; line-height: 1.8;">生徒向けはスマートフォン幅、管理者向けはPC幅で作成しています。画面は
+      <a href="#s1">1 トップ</a> / <a href="#s2">2 ログイン</a> / <a href="#s3">3 ダッシュボード</a> / <a href="#s4">4 自己紹介編集</a> の4点。</p>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px;">
+
+    <div id="s1" style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="width: 26px; height: 26px; border-radius: 50%; background: #3F7F6C; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">1</span>
+        <span style="font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700; font-size: 17px;">トップページ（生徒／スマホ）</span>
+      </div>
+      <div style="width: 390px; border-radius: 30px; overflow: hidden; background: #FBF8F3; box-shadow: 0 18px 44px -20px rgba(47,58,52,.35), 0 0 0 1px rgba(47,58,52,.07);">
+
+        <header style="background: linear-gradient(170deg, #ECF3EF 0%, #E4EDE8 100%); padding: 26px 22px 24px; border-bottom: 1px solid rgba(63,127,108,.14);">
+          <span style="display: inline-block; background: #3F7F6C; color: #F6FBF8; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; padding: 5px 11px; border-radius: 999px;">教育実習生（3週間）</span>
+          <h2 style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 27px; font-weight: 700; margin: 14px 0 6px; line-height: 1.3;">田中 ゆうき です</h2>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.75; color: #4E5A52;">〇〇大学 教育学部 4年 ／ 担当は<strong style="font-weight: 700; color: #2F3A34;">数学</strong>。<br>気軽に話しかけてくださいね。</p>
+        </header>
+
+        <div style="padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 26px;">
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <h3 style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; margin: 0; display: flex; align-items: center; gap: 8px;"><span style="width: 5px; height: 18px; border-radius: 3px; background: #E8A87C; display: inline-block;"></span>じこしょうかい</h3>
+            <div style="display: flex; gap: 14px; align-items: flex-start;">
+              <div style="width: 104px; height: 128px; flex: 0 0 auto; border-radius: 16px; background: #E3DED4; border: 1px solid rgba(47,58,52,.09); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #8C857A; font-size: 11px;">
+                <span style="font-size: 22px;">▣</span>
+                <span>写真</span>
+              </div>
+              <p style="margin: 0; font-size: 14px; line-height: 1.95; color: #4E5A52;">大学では数学の面白さを伝える方法を研究しています。高校時代はバスケ部で、今も週末はプレー中。最近はカフェ巡りと将棋にはまっています。<br>3週間、みなさんと一緒にたくさん学びたいです！</p>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.08); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; color: #5C6559;">#数学</span>
+              <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.08); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; color: #5C6559;">#バスケ</span>
+              <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.08); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; color: #5C6559;">#将棋</span>
+              <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.08); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; color: #5C6559;">#カフェ巡り</span>
+            </div>
+          </div>
+
+          <div style="background: #FDF6EE; border: 1px solid rgba(232,168,124,.45); border-radius: 20px; padding: 18px 16px;">
+            <h3 style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; margin: 0 0 4px;">質問を送ってみよう</h3>
+            <p style="margin: 0 0 12px; font-size: 12.5px; line-height: 1.7; color: #7A7266;">匿名でOK。名前は表示されません。授業のこと、大学のこと、何でもどうぞ。</p>
+            <textarea rows="4" placeholder="例）大学の授業ってどんな感じですか？" style="width: 100%; border: 1px solid rgba(47,58,52,.14); border-radius: 14px; padding: 12px 13px; font-size: 14px; line-height: 1.7; color: #2F3A34; background: #fff; resize: vertical; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);"></textarea>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; gap: 12px;">
+              <sc-if value="{{ showCharCount }}" hint-placeholder-val="{{ true }}"><span style="font-size: 11.5px; color: #A29A8E;">0 / 300文字</span></sc-if>
+              <button style="flex: 1 1 auto; max-width: 190px; background: #3F7F6C; color: #FBFDFB; border: none; border-radius: 999px; padding: 14px 20px; font-size: 15px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer; box-shadow: 0 8px 18px -10px rgba(63,127,108,.9);" style-hover="background: #356B5C;">送信する</button>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between;">
+              <h3 style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; margin: 0; display: flex; align-items: center; gap: 8px;"><span style="width: 5px; height: 18px; border-radius: 3px; background: #3F7F6C; display: inline-block;"></span>みんなの質問と回答</h3>
+              <span style="font-size: 11.5px; color: #A29A8E;">新しい順・12件</span>
+            </div>
+
+            <article style="background: #fff; border: 1px solid rgba(47,58,52,.08); border-radius: 18px; padding: 16px; box-shadow: 0 6px 16px -12px rgba(47,58,52,.35);">
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <span style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 7px; background: #E8A87C; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif;">Q</span>
+                <p style="margin: 0; font-size: 14.5px; font-weight: 500; line-height: 1.7;">数学が苦手でも大学で教育学部に入れますか？</p>
+              </div>
+              <div style="display: flex; gap: 9px; align-items: flex-start; margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(47,58,52,.13);">
+                <span style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 7px; background: #3F7F6C; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif;">A</span>
+                <p style="margin: 0; font-size: 14px; line-height: 1.85; color: #4E5A52;">大丈夫です。自分も高2までは平均点以下でした。「解けた瞬間の気持ちよさ」を一度味わえると変わりますよ。放課後に一緒に解いてみましょう。</p>
+              </div>
+              <span style="display: block; margin-top: 11px; font-size: 11px; color: #ADA69A;">6月12日</span>
+            </article>
+
+            <article style="background: #fff; border: 1px solid rgba(47,58,52,.08); border-radius: 18px; padding: 16px; box-shadow: 0 6px 16px -12px rgba(47,58,52,.35);">
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <span style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 7px; background: #E8A87C; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif;">Q</span>
+                <p style="margin: 0; font-size: 14.5px; font-weight: 500; line-height: 1.7;">高校生のうちにやっておいた方がいいことは？</p>
+              </div>
+              <div style="display: flex; gap: 9px; align-items: flex-start; margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(47,58,52,.13);">
+                <span style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 7px; background: #3F7F6C; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif;">A</span>
+                <p style="margin: 0; font-size: 14px; line-height: 1.85; color: #4E5A52;">「なんとなく気になること」をメモしておくこと。進路を決めるとき、その積み重ねが一番の材料になります。</p>
+              </div>
+              <span style="display: block; margin-top: 11px; font-size: 11px; color: #ADA69A;">6月11日</span>
+            </article>
+
+            <article style="background: #fff; border: 1px solid rgba(47,58,52,.08); border-radius: 18px; padding: 16px; box-shadow: 0 6px 16px -12px rgba(47,58,52,.35);">
+              <div style="display: flex; gap: 9px; align-items: flex-start;">
+                <span style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 7px; background: #E8A87C; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif;">Q</span>
+                <p style="margin: 0; font-size: 14.5px; font-weight: 500; line-height: 1.7;">部活と勉強の両立ってどうしてましたか？</p>
+              </div>
+              <div style="display: flex; gap: 9px; align-items: flex-start; margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(47,58,52,.13);">
+                <span style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 7px; background: #3F7F6C; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Zen Maru Gothic', sans-serif;">A</span>
+                <p style="margin: 0; font-size: 14px; line-height: 1.85; color: #4E5A52;">朝の30分だけを「勉強の時間」と決めていました。夜は疲れて続かなかったので…。自分に合う時間帯を探すのがコツです。</p>
+              </div>
+              <span style="display: block; margin-top: 11px; font-size: 11px; color: #ADA69A;">6月10日</span>
+            </article>
+
+            <button style="background: transparent; border: 1px solid rgba(63,127,108,.4); color: #3F7F6C; border-radius: 999px; padding: 12px; font-size: 14px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer;" style-hover="background: rgba(63,127,108,.08);">もっと見る</button>
+          </div>
+        </div>
+
+        <footer style="padding: 18px 22px 26px; text-align: center; border-top: 1px solid rgba(47,58,52,.07);">
+          <a href="#s2" style="font-size: 12px; color: #A29A8E;">管理者ログイン</a>
+        </footer>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+
+      <div id="s2" style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="width: 26px; height: 26px; border-radius: 50%; background: #3F7F6C; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">2</span>
+          <span style="font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700; font-size: 17px;">管理者ログイン（PC）</span>
+        </div>
+        <div style="width: 940px; height: 420px; border-radius: 20px; background: #F4EFE7; box-shadow: 0 18px 44px -20px rgba(47,58,52,.3), 0 0 0 1px rgba(47,58,52,.07); display: flex; align-items: center; justify-content: center;">
+          <div style="width: 352px; background: #FBF8F3; border: 1px solid rgba(47,58,52,.08); border-radius: 22px; padding: 34px 30px; box-shadow: 0 10px 28px -18px rgba(47,58,52,.4); display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: flex; flex-direction: column; gap: 6px; text-align: center;">
+              <span style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 19px; font-weight: 700;">管理者ログイン</span>
+              <span style="font-size: 12.5px; color: #8C857A;">実習生専用ページ</span>
+            </div>
+            <input type="password" value="••••••••" style="width: 100%; border: 1px solid rgba(47,58,52,.16); border-radius: 12px; padding: 13px 14px; font-size: 15px; letter-spacing: .1em; color: #2F3A34; background: #fff; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);">
+            <button style="width: 100%; background: #3F7F6C; color: #FBFDFB; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer;" style-hover="background: #356B5C;">ログイン</button>
+            <a href="#s1" style="font-size: 12px; color: #A29A8E; text-align: center;">サイトに戻る</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="s3" style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="width: 26px; height: 26px; border-radius: 50%; background: #3F7F6C; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">3</span>
+          <span style="font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700; font-size: 17px;">管理者ダッシュボード（PC）</span>
+        </div>
+        <div style="width: 940px; border-radius: 20px; overflow: hidden; background: #FBF8F3; box-shadow: 0 18px 44px -20px rgba(47,58,52,.3), 0 0 0 1px rgba(47,58,52,.07);">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; background: #ECF3EF; border-bottom: 1px solid rgba(63,127,108,.16);">
+            <div style="display: flex; align-items: center; gap: 22px;">
+              <span style="font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700; font-size: 16px;">質問箱 管理</span>
+              <nav style="display: flex; gap: 4px;">
+                <span style="font-size: 13.5px; font-weight: 700; color: #2F5C4F; background: #fff; border-radius: 999px; padding: 7px 15px;">質問</span>
+                <a href="#s4" style="font-size: 13.5px; color: #5C6559; padding: 7px 15px; border-radius: 999px;">自己紹介</a>
+              </nav>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span style="font-size: 12.5px; color: #7A7266;">田中 ゆうき</span>
+              <a href="#s2" style="font-size: 12.5px; color: #A29A8E;">ログアウト</a>
+            </div>
+          </div>
+
+          <div style="padding: 26px 28px 32px; display: flex; flex-direction: column; gap: 26px;">
+            <div style="display: flex; gap: 12px;">
+              <div style="flex: 1; background: #FDF6EE; border: 1px solid rgba(232,168,124,.45); border-radius: 14px; padding: 14px 16px;">
+                <span style="display: block; font-size: 12px; color: #8C7B67;">未回答</span>
+                <span style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 25px; font-weight: 700; color: #C9743C;">4</span>
+              </div>
+              <div style="flex: 1; background: #ECF3EF; border: 1px solid rgba(63,127,108,.22); border-radius: 14px; padding: 14px 16px;">
+                <span style="display: block; font-size: 12px; color: #5F7A70;">回答済み</span>
+                <span style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 25px; font-weight: 700; color: #3F7F6C;">12</span>
+              </div>
+              <div style="flex: 1; background: #F2EDE4; border: 1px solid rgba(47,58,52,.09); border-radius: 14px; padding: 14px 16px;">
+                <span style="display: block; font-size: 12px; color: #7A7266;">今日の投稿</span>
+                <span style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 25px; font-weight: 700; color: #4E5A52;">3</span>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <h3 style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; margin: 0; display: flex; align-items: center; gap: 8px;"><span style="width: 5px; height: 18px; border-radius: 3px; background: #E8A87C; display: inline-block;"></span>未回答の質問</h3>
+
+              <article style="background: #fff; border: 1px solid rgba(47,58,52,.09); border-radius: 16px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px;">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;">
+                  <p style="margin: 0; font-size: 15.5px; font-weight: 500; line-height: 1.75; max-width: 640px;">先生になろうと思ったきっかけは何ですか？</p>
+                  <span style="flex: 0 0 auto; font-size: 11.5px; color: #ADA69A;">6月13日 08:42</span>
+                </div>
+                <textarea rows="3" placeholder="回答を入力…" style="width: 100%; border: 1px solid rgba(47,58,52,.14); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.8; color: #2F3A34; background: #FDFCFA; resize: vertical; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);"></textarea>
+                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
+                  <button style="background: transparent; border: 1px solid rgba(47,58,52,.16); color: #7A7266; border-radius: 10px; padding: 10px 16px; font-size: 13.5px; cursor: pointer;" style-hover="background: #F2EDE4;">非公開にする</button>
+                  <button style="background: #3F7F6C; color: #FBFDFB; border: none; border-radius: 10px; padding: 10px 22px; font-size: 13.5px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer;" style-hover="background: #356B5C;">回答を公開</button>
+                </div>
+              </article>
+
+              <article style="background: #fff; border: 1px solid rgba(47,58,52,.09); border-radius: 16px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px;">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;">
+                  <p style="margin: 0; font-size: 15.5px; font-weight: 500; line-height: 1.75; max-width: 640px;">大学生活で一番楽しいことを教えてください！</p>
+                  <span style="flex: 0 0 auto; font-size: 11.5px; color: #ADA69A;">6月13日 07:15</span>
+                </div>
+                <textarea rows="3" placeholder="回答を入力…" style="width: 100%; border: 1px solid rgba(47,58,52,.14); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.8; color: #2F3A34; background: #FDFCFA; resize: vertical; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);"></textarea>
+                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
+                  <button style="background: transparent; border: 1px solid rgba(47,58,52,.16); color: #7A7266; border-radius: 10px; padding: 10px 16px; font-size: 13.5px; cursor: pointer;" style-hover="background: #F2EDE4;">非公開にする</button>
+                  <button style="background: #3F7F6C; color: #FBFDFB; border: none; border-radius: 10px; padding: 10px 22px; font-size: 13.5px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer;" style-hover="background: #356B5C;">回答を公開</button>
+                </div>
+              </article>
+
+              <article style="background: #fff; border: 1px solid rgba(47,58,52,.09); border-radius: 16px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px;">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;">
+                  <p style="margin: 0; font-size: 15.5px; font-weight: 500; line-height: 1.75; max-width: 640px;">緊張したときの対処法ってありますか？発表が苦手です。</p>
+                  <span style="flex: 0 0 auto; font-size: 11.5px; color: #ADA69A;">6月12日 21:03</span>
+                </div>
+                <textarea rows="3" placeholder="回答を入力…" style="width: 100%; border: 1px solid rgba(47,58,52,.14); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.8; color: #2F3A34; background: #FDFCFA; resize: vertical; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);"></textarea>
+                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
+                  <button style="background: transparent; border: 1px solid rgba(47,58,52,.16); color: #7A7266; border-radius: 10px; padding: 10px 16px; font-size: 13.5px; cursor: pointer;" style-hover="background: #F2EDE4;">非公開にする</button>
+                  <button style="background: #3F7F6C; color: #FBFDFB; border: none; border-radius: 10px; padding: 10px 22px; font-size: 13.5px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer;" style-hover="background: #356B5C;">回答を公開</button>
+                </div>
+              </article>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid rgba(47,58,52,.09); padding-top: 22px;">
+              <div onClick="{{ toggleAnswered }}" style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none;">
+                <span style="width: 5px; height: 18px; border-radius: 3px; background: #3F7F6C; display: inline-block;"></span>
+                <h3 style="font-family: 'Zen Maru Gothic', sans-serif; font-size: 16px; margin: 0;">回答済みの質問</h3>
+                <span style="font-size: 12px; color: #A29A8E;">12件</span>
+                <span style="margin-left: auto; font-size: 12.5px; color: #3F7F6C;">{{ answeredToggleLabel }}</span>
+              </div>
+
+              <sc-if value="{{ answeredOpen }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <article style="background: #F7F4EE; border: 1px solid rgba(47,58,52,.07); border-radius: 14px; padding: 16px 20px; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 7px;">
+                      <p style="margin: 0; font-size: 14.5px; font-weight: 500;">数学が苦手でも大学で教育学部に入れますか？</p>
+                      <p style="margin: 0; font-size: 13.5px; line-height: 1.8; color: #6B6459;">大丈夫です。自分も高2までは平均点以下でした。放課後に一緒に解いてみましょう。</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                      <span style="font-size: 11.5px; color: #ADA69A;">6月12日</span>
+                      <button style="background: transparent; border: 1px solid rgba(47,58,52,.16); color: #5C6559; border-radius: 8px; padding: 6px 13px; font-size: 12.5px; cursor: pointer;" style-hover="background: #EDE8DF;">編集</button>
+                    </div>
+                  </article>
+                  <article style="background: #F7F4EE; border: 1px solid rgba(47,58,52,.07); border-radius: 14px; padding: 16px 20px; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 7px;">
+                      <p style="margin: 0; font-size: 14.5px; font-weight: 500;">高校生のうちにやっておいた方がいいことは？</p>
+                      <p style="margin: 0; font-size: 13.5px; line-height: 1.8; color: #6B6459;">「なんとなく気になること」をメモしておくこと。進路を決めるときの材料になります。</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                      <span style="font-size: 11.5px; color: #ADA69A;">6月11日</span>
+                      <button style="background: transparent; border: 1px solid rgba(47,58,52,.16); color: #5C6559; border-radius: 8px; padding: 6px 13px; font-size: 12.5px; cursor: pointer;" style-hover="background: #EDE8DF;">編集</button>
+                    </div>
+                  </article>
+                  <article style="background: #F7F4EE; border: 1px solid rgba(47,58,52,.07); border-radius: 14px; padding: 16px 20px; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 7px;">
+                      <p style="margin: 0; font-size: 14.5px; font-weight: 500;">部活と勉強の両立ってどうしてましたか？</p>
+                      <p style="margin: 0; font-size: 13.5px; line-height: 1.8; color: #6B6459;">朝の30分だけを勉強の時間と決めていました。自分に合う時間帯を探すのがコツです。</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                      <span style="font-size: 11.5px; color: #ADA69A;">6月10日</span>
+                      <button style="background: transparent; border: 1px solid rgba(47,58,52,.16); color: #5C6559; border-radius: 8px; padding: 6px 13px; font-size: 12.5px; cursor: pointer;" style-hover="background: #EDE8DF;">編集</button>
+                    </div>
+                  </article>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="s4" style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="width: 26px; height: 26px; border-radius: 50%; background: #3F7F6C; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;">4</span>
+          <span style="font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700; font-size: 17px;">自己紹介編集（PC）</span>
+        </div>
+        <div style="width: 940px; border-radius: 20px; overflow: hidden; background: #FBF8F3; box-shadow: 0 18px 44px -20px rgba(47,58,52,.3), 0 0 0 1px rgba(47,58,52,.07);">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; background: #ECF3EF; border-bottom: 1px solid rgba(63,127,108,.16);">
+            <div style="display: flex; align-items: center; gap: 22px;">
+              <span style="font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700; font-size: 16px;">質問箱 管理</span>
+              <nav style="display: flex; gap: 4px;">
+                <a href="#s3" style="font-size: 13.5px; color: #5C6559; padding: 7px 15px; border-radius: 999px;">質問</a>
+                <span style="font-size: 13.5px; font-weight: 700; color: #2F5C4F; background: #fff; border-radius: 999px; padding: 7px 15px;">自己紹介</span>
+              </nav>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span style="font-size: 12.5px; color: #7A7266;">田中 ゆうき</span>
+              <a href="#s2" style="font-size: 12.5px; color: #A29A8E;">ログアウト</a>
+            </div>
+          </div>
+
+          <div style="padding: 28px; display: grid; grid-template-columns: 260px 1fr; gap: 30px; align-items: start;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <span style="font-size: 13px; font-weight: 700; color: #4E5A52;">プロフィール写真</span>
+              <div style="border: 2px dashed rgba(63,127,108,.35); border-radius: 18px; background: #F5F1EA; padding: 22px 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+                <div style="width: 108px; height: 132px; border-radius: 14px; background: #E3DED4; border: 1px solid rgba(47,58,52,.09); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #8C857A; font-size: 11px;">
+                  <span style="font-size: 22px;">▣</span>
+                  <span>現在の写真</span>
+                </div>
+                <p style="margin: 0; font-size: 12px; line-height: 1.7; color: #8C857A;">ここにドラッグ＆ドロップ<br>JPG / PNG・5MBまで</p>
+                <button style="background: #fff; border: 1px solid rgba(63,127,108,.4); color: #3F7F6C; border-radius: 10px; padding: 9px 18px; font-size: 13px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer;" style-hover="background: rgba(63,127,108,.08);">ファイルを選ぶ</button>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <label style="display: flex; flex-direction: column; gap: 7px;">
+                  <span style="font-size: 13px; font-weight: 700; color: #4E5A52;">名前</span>
+                  <input type="text" value="田中 ゆうき" style="border: 1px solid rgba(47,58,52,.14); border-radius: 11px; padding: 11px 13px; font-size: 14.5px; color: #2F3A34; background: #fff; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);">
+                </label>
+                <label style="display: flex; flex-direction: column; gap: 7px;">
+                  <span style="font-size: 13px; font-weight: 700; color: #4E5A52;">ひとこと（ヘッダー表示）</span>
+                  <input type="text" value="〇〇大学 教育学部 4年 ／ 担当は数学" style="border: 1px solid rgba(47,58,52,.14); border-radius: 11px; padding: 11px 13px; font-size: 14.5px; color: #2F3A34; background: #fff; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);">
+                </label>
+              </div>
+
+              <label style="display: flex; flex-direction: column; gap: 7px;">
+                <span style="font-size: 13px; font-weight: 700; color: #4E5A52;">プロフィール文</span>
+                <textarea rows="7" style="border: 1px solid rgba(47,58,52,.14); border-radius: 13px; padding: 13px 14px; font-size: 14.5px; line-height: 1.9; color: #2F3A34; background: #fff; resize: vertical; outline: none;" style-focus="border-color: #3F7F6C; box-shadow: 0 0 0 3px rgba(63,127,108,.14);">大学では数学の面白さを伝える方法を研究しています。高校時代はバスケ部で、今も週末はプレー中。最近はカフェ巡りと将棋にはまっています。
+3週間、みなさんと一緒にたくさん学びたいです！</textarea>
+                <span style="font-size: 11.5px; color: #A29A8E; align-self: flex-end;">128 / 400文字</span>
+              </label>
+
+              <div style="display: flex; flex-direction: column; gap: 9px;">
+                <span style="font-size: 13px; font-weight: 700; color: #4E5A52;">タグ（最大6つ）</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                  <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.1); border-radius: 999px; padding: 7px 10px 7px 13px; font-size: 12.5px; color: #5C6559; display: flex; align-items: center; gap: 8px;">#数学<span style="color: #ADA69A; cursor: pointer;">×</span></span>
+                  <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.1); border-radius: 999px; padding: 7px 10px 7px 13px; font-size: 12.5px; color: #5C6559; display: flex; align-items: center; gap: 8px;">#バスケ<span style="color: #ADA69A; cursor: pointer;">×</span></span>
+                  <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.1); border-radius: 999px; padding: 7px 10px 7px 13px; font-size: 12.5px; color: #5C6559; display: flex; align-items: center; gap: 8px;">#将棋<span style="color: #ADA69A; cursor: pointer;">×</span></span>
+                  <span style="background: #F2EDE4; border: 1px solid rgba(47,58,52,.1); border-radius: 999px; padding: 7px 10px 7px 13px; font-size: 12.5px; color: #5C6559; display: flex; align-items: center; gap: 8px;">#カフェ巡り<span style="color: #ADA69A; cursor: pointer;">×</span></span>
+                  <button style="background: transparent; border: 1px dashed rgba(47,58,52,.24); color: #8C857A; border-radius: 999px; padding: 7px 14px; font-size: 12.5px; cursor: pointer;" style-hover="border-color: #3F7F6C; color: #3F7F6C;">＋ 追加</button>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; border-top: 1px solid rgba(47,58,52,.09); padding-top: 18px;">
+                <span style="margin-right: auto; font-size: 12px; color: #A29A8E;">最終更新：6月13日 09:20</span>
+                <button style="background: transparent; border: 1px solid rgba(47,58,52,.16); color: #7A7266; border-radius: 11px; padding: 11px 18px; font-size: 13.5px; cursor: pointer;" style-hover="background: #F2EDE4;">プレビュー</button>
+                <button style="background: #3F7F6C; color: #FBFDFB; border: none; border-radius: 11px; padding: 11px 28px; font-size: 14px; font-weight: 700; font-family: 'Zen Maru Gothic', sans-serif; cursor: pointer;" style-hover="background: #356B5C;">保存する</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showCharCount&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;生徒画面&quot;},&quot;answeredOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;管理画面&quot;}}">
+class Component extends DCLogic {
+  state = { answeredOpen: null };
+  renderVals() {
+    const open = this.state.answeredOpen ?? (this.props.answeredOpen ?? true);
+    return {
+      answeredOpen: open,
+      answeredToggleLabel: open ? "閉じる ▲" : "ひらく ▼",
+      showCharCount: this.props.showCharCount ?? true,
+      toggleAnswered: () => this.setState({ answeredOpen: !open })
+    };
+  }
+}
+</script>
+</body>
+</html>
