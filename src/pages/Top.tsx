@@ -97,8 +97,9 @@ export default function Top() {
 
       <div className="top-body">
         <section className="intro-section">
-          <h3 className="section-title">じこしょうかい</h3>
+          <h3 className="section-title">自己紹介</h3>
           <div className="intro-row">
+            <p className="intro-text">{profile.bio}</p>
             <div className="photo-placeholder">
               {profile.avatar_url ? (
                 <img className="photo-image" src={profile.avatar_url} alt="" />
@@ -109,7 +110,6 @@ export default function Top() {
                 </>
               )}
             </div>
-            <p className="intro-text">{profile.bio}</p>
           </div>
           <div className="tag-list">
             {profile.tags.map((tag) => (

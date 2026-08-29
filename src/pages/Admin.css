@@ -9,17 +9,17 @@
   --adm-tab-active: #2F5C4F;
   --adm-header-bg: #ECF3EF;
   --adm-pending-num: #C9743C;
-  --adm-pending-label: #8C7B67;
-  --adm-answered-label: #5F7A70;
-  --adm-muted-btn: #7A7266;
+  --adm-pending-label: #6E5F4E;
+  --adm-answered-label: #4A6058;
+  --adm-muted-btn: #615A50;
   --adm-answered-card: #F7F4EE;
-  --adm-answered-body: #6B6459;
-  --adm-edit-text: #5C6559;
+  --adm-answered-body: #565045;
+  --adm-edit-text: #454D43;
   --adm-input-bg: #FDFCFA;
   --adm-edit-hover: #EDE8DF;
   --adm-drop-bg: #F5F1EA;
   --adm-photo-bg: #E3DED4;
-  --adm-date: #ADA69A;
+  --adm-date: #837C70;
   /* モックにエラー表示が無いため独自に追加。--color-card 上でコントラスト比 5.5:1 */
   --adm-error: #B0402A;
 

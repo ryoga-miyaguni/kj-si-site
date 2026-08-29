@@ -172,16 +172,20 @@ const mockData = mockRaw as MockData;
 
 ### CSS変数（`src/index.css`）
 
-仕様書 §3 の定義と**完全に一致**。新しい色やフォントは追加せず、必ずこの変数を使ってください。
+新しい色やフォントは追加せず、必ずこの変数を使ってください。
 
 ```
 --color-bg #EFE9E0 / --color-card #FBF8F3
---color-text #2F3A34 / --color-text-muted #4E5A52
---color-text-faint #8C857A / --color-text-faintest #A29A8E
+--color-text #212925 / --color-text-strong #161C19 / --color-text-muted #3A443E
+--color-text-faint #6B655C / --color-text-faintest #767061
 --color-accent #3F7F6C / --color-accent-hover #356B5C / --color-accent-sub #E8A87C
 --color-tag-bg #F2EDE4 / --color-question-bg #FDF6EE
 --font-heading 'Zen Maru Gothic' / --font-body 'Zen Kaku Gothic New'
 ```
+
+**文字色は仕様書 §3 の値から一段階濃くしてある**（2026-08-29、本番で見て判断）。
+配色・フォントは仕様書のまま。`--color-text-strong` は自己紹介本文用に追加したもので、
+仕様書には無い。コントラスト比は最も薄い `--color-text-faintest` でも 4.6:1 で AA を満たす。
 
 `index.css` にはこのほか `:focus-visible`（アクセント色の枠線）と
 `html { -webkit-text-size-adjust: 100% }` があります。どちらも見た目の変更ではなく、
