@@ -1,0 +1,16 @@
+# Supabase CLI の設定。これが無いと CLI がプロジェクトルートを特定できず、
+# functions/ や migrations/ を見つけられない。
+# project_id はダッシュボード URL の project ref。
+project_id = "kjgxrtlmiciytupagazt"
+
+# 各 Edge Function は自前で ADMIN_PASSWORD を照合している。
+# anon key はもともとブラウザに埋め込まれる公開鍵なので、JWT 検証は防御にならない。
+# 401 が出る場合はここを false にして再デプロイする。
+[functions.admin-auth]
+verify_jwt = true
+
+[functions.admin-read]
+verify_jwt = true
+
+[functions.admin-write]
+verify_jwt = true
