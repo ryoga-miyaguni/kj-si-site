@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import AdminNav from "../components/AdminNav";
 import { ErrorNote, Loading } from "../components/StateNote";
 import {
-  fetchAllQuestions,
+  fetchAdminQuestions,
   hideQuestion,
   publishAnswer,
   restoreQuestion,
   updateAnswer,
 } from "../lib/api";
-import { getSessionPassword } from "../lib/auth";
+import { getToken } from "../lib/auth";
 import { formatDate, formatDateTime, isToday } from "../lib/date";
 import type { Question } from "../types";
 import "./Admin.css";
@@ -32,7 +32,7 @@ export default function AdminDashboard() {
 
   const load = useCallback(async () => {
     try {
-      setQuestions(await fetchAllQuestions(getSessionPassword() ?? ""));
+      setQuestions(await fetchAdminQuestions(getToken()));
       setLoadError("");
     } catch {
       setLoadError("質問を読み込めませんでした。通信を確認してください。");
@@ -54,12 +54,12 @@ export default function AdminDashboard() {
   }, [load]);
 
   /** 書き込み系はすべてここを通す。完了後に一覧を取り直して状態のズレを防ぐ */
-  async function run(id: string, task: (password: string) => Promise<void>) {
+  async function run(id: string, task: (token: string) => Promise<void>) {
     setBusyId(id);
     setActionError("");
     try {
-      await task(getSessionPassword() ?? "");
-      setQuestions(await fetchAllQuestions(getSessionPassword() ?? ""));
+      await task(getToken());
+      setQuestions(await fetchAdminQuestions(getToken()));
     } catch {
       setActionError("保存できませんでした。もう一度お試しください。");
     } finally {
@@ -70,8 +70,8 @@ export default function AdminDashboard() {
   function publish(id: string) {
     const body = (drafts[id] ?? "").trim();
     if (!body) return;
-    void run(id, async (password) => {
-      await publishAnswer(password, id, body);
+    void run(id, async (token) => {
+      await publishAnswer(token, id, body);
       setDrafts((prev) => {
         const next = { ...prev };
         delete next[id];
@@ -83,8 +83,8 @@ export default function AdminDashboard() {
   function saveEdit(id: string) {
     const body = editDraft.trim();
     if (!body) return;
-    void run(id, async (password) => {
-      await updateAnswer(password, id, body);
+    void run(id, async (token) => {
+      await updateAnswer(token, id, body);
       setEditingId(null);
     });
   }

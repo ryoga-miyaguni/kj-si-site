@@ -1,40 +1,52 @@
-// B2: 管理者による書き込みをすべて代行する。
-// POST { password, action, ...payload }
-//   publishAnswer  { questionId, body }  未回答に回答をつけて公開
-//   updateAnswer   { questionId, body }  公開済みの回答を編集
-//   hideQuestion   { questionId }        非公開にする
-//   restoreQuestion{ questionId }        未回答に戻す
-//   updateProfile  { name, headline, bio, tags, avatarUrl? }
-//   createAvatarUploadUrl { path }      署名付きアップロード URL を発行する
+// ログイン中の実習生による書き込みを代行する。
+// POST { token, action, ...payload }
+//   publishAnswer         { questionId, body }
+//   updateAnswer          { questionId, body }
+//   hideQuestion          { questionId }
+//   restoreQuestion       { questionId }
+//   updateProfile         { name, headline, bio, tags, theme, avatarUrl? }
+//   createAvatarUploadUrl { ext }
+//
+// teacher_id はトークンから引く。リクエストに含まれていても使わない。
 
-import { adminClient, checkPassword, corsHeaders, json } from "../_shared/lib.ts";
+import {
+  adminClient,
+  corsHeaders,
+  json,
+  ownsQuestion,
+  requireSession,
+} from "../_shared/lib.ts";
+
+const THEMES = ["moss", "indigo", "plum", "clay", "ocean", "slate"];
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
 
   const payload = await req.json().catch(() => ({}));
-  if (!checkPassword(payload.password)) return json({ error: "unauthorized" }, 401);
-
   const supabase = adminClient();
+
+  const teacherId = await requireSession(supabase, payload.token);
+  if (!teacherId) return json({ error: "unauthorized" }, 401);
+
   const { action, questionId, body } = payload;
 
   switch (action) {
     case "publishAnswer":
     case "updateAnswer": {
-      if (!questionId || typeof body !== "string" || !body.trim()) {
-        return json({ error: "invalid payload" }, 400);
+      if (typeof body !== "string" || !body.trim()) return json({ error: "invalid payload" }, 400);
+      // 他人の質問 ID を渡されても弾く
+      if (!await ownsQuestion(supabase, teacherId, questionId)) {
+        return json({ error: "not found" }, 404);
       }
-      // 1問1回答なので question_id で upsert する
+
       const { error: answerError } = await supabase
         .from("answers")
         .upsert({ question_id: questionId, body: body.trim() }, { onConflict: "question_id" });
       if (answerError) return json({ error: answerError.message }, 500);
 
       const { error: statusError } = await supabase
-        .from("questions")
-        .update({ status: "answered" })
-        .eq("id", questionId);
+        .from("questions").update({ status: "answered" }).eq("id", questionId);
       if (statusError) return json({ error: statusError.message }, 500);
 
       return json({ ok: true });
@@ -42,38 +54,41 @@ Deno.serve(async (req) => {
 
     case "hideQuestion":
     case "restoreQuestion": {
-      if (!questionId) return json({ error: "invalid payload" }, 400);
+      if (!await ownsQuestion(supabase, teacherId, questionId)) {
+        return json({ error: "not found" }, 404);
+      }
       const status = action === "hideQuestion" ? "hidden" : "pending";
       const { error } = await supabase
-        .from("questions")
-        .update({ status })
-        .eq("id", questionId);
+        .from("questions").update({ status }).eq("id", questionId);
       if (error) return json({ error: error.message }, 500);
       return json({ ok: true });
     }
 
     case "updateProfile": {
-      const { name, headline, bio, tags, avatarUrl } = payload;
-      const { data: existing } = await supabase.from("profile").select("id").limit(1).single();
-      if (!existing) return json({ error: "profile row not found" }, 500);
+      const { name, headline, bio, tags, theme, avatarUrl } = payload;
+      if (typeof theme === "string" && !THEMES.includes(theme)) {
+        return json({ error: "unknown theme" }, 400);
+      }
 
       const patch: Record<string, unknown> = {
         name, headline, bio,
         tags: Array.isArray(tags) ? tags : [],
         updated_at: new Date().toISOString(),
       };
-      if (typeof avatarUrl === "string") patch.avatar_url = avatarUrl;
+      if (typeof theme === "string") patch.theme = theme;
+      if (typeof avatarUrl === "string" || avatarUrl === null) patch.avatar_url = avatarUrl;
 
-      const { error } = await supabase.from("profile").update(patch).eq("id", existing.id);
+      // 更新対象は必ず自分の行
+      const { error } = await supabase.from("teachers").update(patch).eq("id", teacherId);
       if (error) return json({ error: error.message }, 500);
       return json({ ok: true });
     }
 
-    // 画像本体は Edge Function を通さない。ここでは書き込み権限のある
-    // 署名付き URL を発行するだけで、ブラウザはその URL に直接アップロードする
     case "createAvatarUploadUrl": {
-      const { path } = payload;
-      if (typeof path !== "string" || !path) return json({ error: "invalid payload" }, 400);
+      // パスはクライアントに決めさせない。実習生ごとの名前空間をサーバー側で組み立てる
+      // （MULTI_TENANT.md §4-4）
+      const ext = payload.ext === "png" ? "png" : "jpg";
+      const path = `${teacherId}/avatar-${Date.now()}.${ext}`;
 
       const { data, error } = await supabase
         .storage.from("avatars").createSignedUploadUrl(path);

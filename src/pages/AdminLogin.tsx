@@ -16,9 +16,9 @@ export default function AdminLogin() {
 
     setChecking(true);
     try {
-      const ok = await login(password);
-      if (ok) {
-        saveSession(password);
+      const session = await login(password);
+      if (session) {
+        saveSession(session);
         navigate("/admin", { replace: true });
       } else {
         setError("パスワードが違います");
@@ -35,7 +35,7 @@ export default function AdminLogin() {
       <form className="login-card" onSubmit={handleSubmit}>
         <div className="login-head">
           <span className="login-title">管理者ログイン</span>
-          <span className="login-sub">実習生専用ページ</span>
+          <span className="login-sub">実習生ごとのパスワードを入力してください</span>
         </div>
 
         <label className="visually-hidden" htmlFor="password">パスワード</label>

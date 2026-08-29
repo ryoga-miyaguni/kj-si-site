@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "../components/StateNote.css";
-import "./Top.css";
+import "./TeacherPage.css";
 
 export default function NotFound() {
   return (

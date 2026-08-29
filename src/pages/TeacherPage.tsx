@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { Link, useParams } from "react-router-dom";
 import { ErrorNote, Loading } from "../components/StateNote";
-import { fetchAnsweredQuestions, fetchProfile, submitQuestion } from "../lib/api";
+import { fetchAnsweredQuestions, fetchTeacherBySlug, submitQuestion } from "../lib/api";
 import { formatDate } from "../lib/date";
-import type { Profile, Question } from "../types";
-import "./Top.css";
+import { themeVars } from "../lib/theme";
+import type { Question, Teacher } from "../types";
+import "./TeacherPage.css";
 
-export default function Top() {
-  const [profile, setProfile] = useState<Profile | null>(null);
+export default function TeacherPage() {
+  const { slug = "" } = useParams();
+  const [profile, setProfile] = useState<Teacher | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const [answered, setAnswered] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -20,19 +24,20 @@ export default function Top() {
 
   const load = useCallback(async () => {
     try {
-      const [nextProfile, nextAnswered] = await Promise.all([
-        fetchProfile(),
-        fetchAnsweredQuestions(),
-      ]);
-      setProfile(nextProfile);
-      setAnswered(nextAnswered);
+      const teacher = await fetchTeacherBySlug(slug);
+      if (!teacher) {
+        setNotFound(true);
+        return;
+      }
+      setProfile(teacher);
+      setAnswered(await fetchAnsweredQuestions(teacher.id));
       setLoadError("");
     } catch {
       setLoadError("ページを読み込めませんでした。通信を確認してください。");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [slug]);
 
   // 初回読み込み。load() 内の setState はすべて await の後で走るが、
   // ルールが async 境界を追えず誤検知するため、この呼び出しだけ抑制する
@@ -56,12 +61,12 @@ export default function Top() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const body = draft.trim();
-    if (!body || sending) return;
+    if (!body || sending || !profile) return;
 
     setSending(true);
     setSendError("");
     try {
-      await submitQuestion(body);
+      await submitQuestion(profile.id, body);
       setDraft("");
       setSent(true);
     } catch {
@@ -79,6 +84,18 @@ export default function Top() {
     );
   }
 
+  if (notFound) {
+    return (
+      <div className="top-card">
+        <p className="state-note">
+          この実習生のページは見つかりませんでした。
+          <br />
+          <Link className="state-retry" to="/">一覧にもどる</Link>
+        </p>
+      </div>
+    );
+  }
+
   if (loadError || !profile) {
     return (
       <div className="top-card">
@@ -88,8 +105,9 @@ export default function Top() {
   }
 
   return (
-    <div className="top-card">
+    <div className="top-card" style={themeVars(profile.theme)}>
       <header className="top-header">
+        <Link className="back-to-list" to="/">← 一覧</Link>
         <span className="badge">教育実習生</span>
         <h1>{profile.name} です</h1>
         <p>{profile.headline}</p>

@@ -12,7 +12,11 @@
 }
 
 .top-header {
-  background: linear-gradient(170deg, #ECF3EF 0%, #E4EDE8 100%);
+  background: linear-gradient(
+    170deg,
+    var(--theme-header-from, #ECF3EF) 0%,
+    var(--theme-header-to, #E4EDE8) 100%
+  );
   padding: clamp(22px, 5vw, 32px) var(--pad-x) clamp(20px, 4.5vw, 30px);
   border-bottom: 1px solid rgba(63,127,108,.14);
 }
@@ -327,3 +331,15 @@
   object-fit: cover;
   border-radius: inherit;
 }
+
+
+/* 一覧へ戻る導線 */
+.back-to-list {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.back-to-list:hover { color: var(--color-accent); }

@@ -4,11 +4,13 @@ import { ErrorNote, Loading } from "../components/StateNote";
 import {
   AVATAR_MAX_BYTES,
   AVATAR_MIME,
-  fetchProfile,
+  fetchAdminProfile,
   updateProfile,
   uploadAvatar,
 } from "../lib/api";
-import { getSessionPassword } from "../lib/auth";
+import { getToken } from "../lib/auth";
+import { THEMES, themeVars } from "../lib/theme";
+import type { ThemeId } from "../types";
 import "./Admin.css";
 
 export default function AdminProfile() {
@@ -17,6 +19,7 @@ export default function AdminProfile() {
   const [bio, setBio] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [theme, setTheme] = useState<ThemeId>("moss");
 
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -33,12 +36,13 @@ export default function AdminProfile() {
 
   const load = useCallback(async () => {
     try {
-      const profile = await fetchProfile();
+      const profile = await fetchAdminProfile(getToken());
       setName(profile.name);
       setHeadline(profile.headline);
       setBio(profile.bio);
       setTags(profile.tags);
       setAvatarUrl(profile.avatar_url);
+      setTheme(profile.theme);
       setLoadError("");
     } catch {
       setLoadError("プロフィールを読み込めませんでした。通信を確認してください。");
@@ -74,7 +78,7 @@ export default function AdminProfile() {
     setUploading(true);
     setPhotoError("");
     try {
-      setAvatarUrl(await uploadAvatar(getSessionPassword() ?? "", file));
+      setAvatarUrl(await uploadAvatar(getToken(), file));
       setPhotoName(file.name);
       setSaved(false);
     } catch {
@@ -107,8 +111,8 @@ export default function AdminProfile() {
     setSaving(true);
     setSaveError("");
     try {
-      await updateProfile(getSessionPassword() ?? "", {
-        name, headline, bio, tags, avatar_url: avatarUrl,
+      await updateProfile(getToken(), {
+        name, headline, bio, tags, theme, avatar_url: avatarUrl,
       });
       setSaved(true);
     } catch {
@@ -277,6 +281,28 @@ export default function AdminProfile() {
                     ＋ 追加
                   </button>
                 )}
+              </div>
+            </div>
+
+            <div className="theme-field">
+              <span className="field-label">テーマカラー</span>
+              <div className="theme-row">
+                {THEMES.map((preset) => (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    className={preset.id === theme ? "theme-chip is-active" : "theme-chip"}
+                    style={themeVars(preset.id)}
+                    aria-pressed={preset.id === theme}
+                    onClick={() => {
+                      setTheme(preset.id);
+                      setSaved(false);
+                    }}
+                  >
+                    <span className="theme-dot" aria-hidden="true" />
+                    {preset.label}
+                  </button>
+                ))}
               </div>
             </div>
 
