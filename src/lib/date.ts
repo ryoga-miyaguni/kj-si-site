@@ -1,13 +1,32 @@
-/** "2026-06-13" → "6月13日"。created_at は日付のみなので時刻は扱わない */
-export function formatDate(iso: string): string {
-  const [, month, day] = iso.split("-");
-  return `${Number(month)}月${Number(day)}日`;
+const JST = "ja-JP";
+
+function toDate(iso: string): Date {
+  return new Date(iso);
 }
 
-/** 今日の日付を created_at と同じ "YYYY-MM-DD" 形式で返す */
-export function todayISO(): string {
+/** "2026-06-13T08:42:00+09:00" → "6月13日" */
+export function formatDate(iso: string): string {
+  const d = toDate(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return `${d.getMonth() + 1}月${d.getDate()}日`;
+}
+
+/** "2026-06-13T08:42:00+09:00" → "6月13日 08:42"（管理画面の未回答一覧で使う） */
+export function formatDateTime(iso: string): string {
+  const d = toDate(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const time = d.toLocaleTimeString(JST, { hour: "2-digit", minute: "2-digit" });
+  return `${formatDate(iso)} ${time}`;
+}
+
+/** その ISO 日時が今日かどうか */
+export function isToday(iso: string): boolean {
+  const d = toDate(iso);
+  if (Number.isNaN(d.getTime())) return false;
   const now = new Date();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${now.getFullYear()}-${month}-${day}`;
+  return (
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate()
+  );
 }

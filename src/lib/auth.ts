@@ -7,17 +7,10 @@
  *   3. 成功したらセッション中は sessionStorage に保持し、書き込みのたびに一緒に送る
  *   4. Edge Function 側で再確認のうえ Service Role Key で書き込む
  *
- * 現在は 2 をモック（固定文字列との比較）で代替している。
- * 注意：MOCK_PASSWORD は JS バンドルに平文で含まれる。公開前に必ず Edge Function に差し替えること。
+ * 照合そのものは src/lib/api.ts の login() が担当する
+ * （Supabase 未設定のあいだだけ固定文字列で代替する）。
  */
-const MOCK_PASSWORD = "admin123";
-
 const SESSION_KEY = "kj-si-admin";
-
-export async function verifyPassword(input: string): Promise<boolean> {
-  // TODO: Supabase Edge Function への POST に差し替える
-  return input === MOCK_PASSWORD;
-}
 
 /**
  * ログイン状態を保持する。

@@ -1,12 +1,9 @@
 /**
- * モックデータの型定義。
- * Supabase 接続後もこの形をそのまま踏襲する（フィールド名を変えない）。
+ * データ型定義。Supabase のテーブル定義（supabase/migrations/0001_init.sql）と対応させる。
+ * mock.json も本番と同じ形（uuid / ISO 日時）で持つ。
  */
 
-/**
- * hidden = 管理者が非公開にした質問。公開側・管理側の一覧どちらにも出さない。
- * （モック s3 の「非公開にする」に対応。仕様書 §4 からの拡張）
- */
+/** hidden = 管理者が非公開にした質問。公開側の一覧には出ない */
 export type QuestionStatus = "answered" | "pending" | "hidden";
 
 export type Profile = {
@@ -15,15 +12,18 @@ export type Profile = {
   /** 改行は \n で表現。表示側は white-space: pre-line で対応済み */
   bio: string;
   tags: string[];
+  /** Supabase Storage の画像 URL。未設定なら null */
+  avatar_url: string | null;
 };
 
 export type Question = {
-  id: number;
+  /** uuid */
+  id: string;
   body: string;
-  /** 未回答のときは null */
+  /** 未回答のときは null。DB では answers テーブルに分かれている */
   answer: string | null;
   status: QuestionStatus;
-  /** YYYY-MM-DD */
+  /** timestamptz の ISO 文字列 */
   created_at: string;
 };
 

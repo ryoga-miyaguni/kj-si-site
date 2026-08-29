@@ -1,21 +1,54 @@
-import { useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import AdminNav from "../components/AdminNav";
-import mockRaw from "../data/mock.json";
-import type { MockData } from "../types";
+import { ErrorNote, Loading } from "../components/StateNote";
+import { fetchProfile, updateProfile } from "../lib/api";
+import { getSessionPassword } from "../lib/auth";
 import "./Admin.css";
 
-const mockData = mockRaw as MockData;
-
 export default function AdminProfile() {
-  const [name, setName] = useState(mockData.profile.name);
-  const [headline, setHeadline] = useState(mockData.profile.headline);
-  const [bio, setBio] = useState(mockData.profile.bio);
-  const [tags, setTags] = useState<string[]>(mockData.profile.tags);
+  const [name, setName] = useState("");
+  const [headline, setHeadline] = useState("");
+  const [bio, setBio] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   const [photoName, setPhotoName] = useState("");
   const [addingTag, setAddingTag] = useState(false);
   const [tagDraft, setTagDraft] = useState("");
   const [saved, setSaved] = useState(false);
+
+  const load = useCallback(async () => {
+    try {
+      const profile = await fetchProfile();
+      setName(profile.name);
+      setHeadline(profile.headline);
+      setBio(profile.bio);
+      setTags(profile.tags);
+      setAvatarUrl(profile.avatar_url);
+      setLoadError("");
+    } catch {
+      setLoadError("プロフィールを読み込めませんでした。通信を確認してください。");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // 初回読み込み。load() 内の setState はすべて await の後で走るが、
+  // ルールが async 境界を追えず誤検知するため、この呼び出しだけ抑制する
+  useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect
+    void load();
+  }, [load]);
+
+  const retry = useCallback(() => {
+    setLoading(true);
+    void load();
+  }, [load]);
 
   function removeTag(target: string) {
     setTags((prev) => prev.filter((tag) => tag !== target));
@@ -34,11 +67,39 @@ export default function AdminProfile() {
     setSaved(false);
   }
 
-  function handleSave(event: FormEvent) {
+  async function handleSave(event: FormEvent) {
     event.preventDefault();
-    // TODO: Supabase の profile テーブルを更新する
-    console.log({ name, headline, bio, tags });
-    setSaved(true);
+    if (saving) return;
+    setSaving(true);
+    setSaveError("");
+    try {
+      await updateProfile(getSessionPassword() ?? "", {
+        name, headline, bio, tags, avatar_url: avatarUrl,
+      });
+      setSaved(true);
+    } catch {
+      setSaveError("保存できませんでした。もう一度お試しください。");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="admin">
+        <AdminNav />
+        <Loading />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="admin">
+        <AdminNav />
+        <ErrorNote message={loadError} onRetry={retry} />
+      </div>
+    );
   }
 
   return (
@@ -51,8 +112,14 @@ export default function AdminProfile() {
             <span className="field-label">プロフィール写真</span>
             <div className="dropzone">
               <div className="dropzone-photo">
-                <span className="dropzone-icon">▣</span>
-                <span>現在の写真</span>
+                {avatarUrl ? (
+                  <img className="photo-image" src={avatarUrl} alt="" />
+                ) : (
+                  <>
+                    <span className="dropzone-icon">▣</span>
+                    <span>現在の写真</span>
+                  </>
+                )}
               </div>
               <p className="dropzone-hint">
                 {photoName || (
@@ -163,7 +230,11 @@ export default function AdminProfile() {
             </div>
 
             <div className="profile-footer">
-              {saved && <p className="save-note">保存しました（コンソールに出力）</p>}
+              {saveError ? (
+                <p className="inline-error save-note">{saveError}</p>
+              ) : (
+                saved && <p className="save-note">保存しました</p>
+              )}
               <button
                 className="btn-quiet is-wide"
                 type="button"
@@ -171,8 +242,8 @@ export default function AdminProfile() {
               >
                 プレビュー
               </button>
-              <button className="btn-accent is-wide" type="submit">
-                保存する
+              <button className="btn-accent is-wide" type="submit" disabled={saving}>
+                {saving ? "保存中…" : "保存する"}
               </button>
             </div>
           </div>

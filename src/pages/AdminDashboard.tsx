@@ -1,63 +1,110 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AdminNav from "../components/AdminNav";
-import mockRaw from "../data/mock.json";
-import { formatDate, todayISO } from "../lib/date";
-import type { MockData, Question } from "../types";
+import { ErrorNote, Loading } from "../components/StateNote";
+import {
+  fetchAllQuestions,
+  hideQuestion,
+  publishAnswer,
+  restoreQuestion,
+  updateAnswer,
+} from "../lib/api";
+import { getSessionPassword } from "../lib/auth";
+import { formatDate, formatDateTime, isToday } from "../lib/date";
+import type { Question } from "../types";
 import "./Admin.css";
 
-const mockData = mockRaw as MockData;
-
 export default function AdminDashboard() {
-  const [questions, setQuestions] = useState<Question[]>(mockData.questions);
-  const [drafts, setDrafts] = useState<Record<number, string>>({});
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [actionError, setActionError] = useState("");
+  const [busyId, setBusyId] = useState<string | null>(null);
+
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [answeredOpen, setAnsweredOpen] = useState(true);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [editDraft, setEditDraft] = useState("");
 
   const pending = questions.filter((q) => q.status === "pending");
   const answered = questions.filter((q) => q.status === "answered");
   const hidden = questions.filter((q) => q.status === "hidden");
-  const today = todayISO();
-  const todayCount = questions.filter((q) => q.created_at === today).length;
+  const todayCount = questions.filter((q) => isToday(q.created_at)).length;
 
-  /** 回答を公開する。TODO: Supabase の answers を更新する */
-  function publish(id: number) {
-    const answer = (drafts[id] ?? "").trim();
-    if (!answer) return;
-    setQuestions((prev) =>
-      prev.map((q): Question => (q.id === id ? { ...q, answer, status: "answered" } : q)),
-    );
-    setDrafts((prev) => {
-      const next = { ...prev };
-      delete next[id];
-      return next;
+  const load = useCallback(async () => {
+    try {
+      setQuestions(await fetchAllQuestions(getSessionPassword() ?? ""));
+      setLoadError("");
+    } catch {
+      setLoadError("質問を読み込めませんでした。通信を確認してください。");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // 初回読み込み。load() 内の setState はすべて await の後で走るが、
+  // ルールが async 境界を追えず誤検知するため、この呼び出しだけ抑制する
+  useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect
+    void load();
+  }, [load]);
+
+  const retry = useCallback(() => {
+    setLoading(true);
+    void load();
+  }, [load]);
+
+  /** 書き込み系はすべてここを通す。完了後に一覧を取り直して状態のズレを防ぐ */
+  async function run(id: string, task: (password: string) => Promise<void>) {
+    setBusyId(id);
+    setActionError("");
+    try {
+      await task(getSessionPassword() ?? "");
+      setQuestions(await fetchAllQuestions(getSessionPassword() ?? ""));
+    } catch {
+      setActionError("保存できませんでした。もう一度お試しください。");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  function publish(id: string) {
+    const body = (drafts[id] ?? "").trim();
+    if (!body) return;
+    void run(id, async (password) => {
+      await publishAnswer(password, id, body);
+      setDrafts((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
     });
   }
 
-  /** 非公開にする。公開側・管理側どちらの一覧からも外れる */
-  function hide(id: number) {
-    setQuestions((prev) =>
-      prev.map((q): Question => (q.id === id ? { ...q, status: "hidden" } : q)),
+  function saveEdit(id: string) {
+    const body = editDraft.trim();
+    if (!body) return;
+    void run(id, async (password) => {
+      await updateAnswer(password, id, body);
+      setEditingId(null);
+    });
+  }
+
+  if (loading) {
+    return (
+      <div className="admin">
+        <AdminNav />
+        <Loading />
+      </div>
     );
   }
 
-  /** 非公開を取り消して未回答に戻す */
-  function restore(id: number) {
-    setQuestions((prev) =>
-      prev.map((q): Question => (q.id === id ? { ...q, status: "pending" } : q)),
+  if (loadError) {
+    return (
+      <div className="admin">
+        <AdminNav />
+        <ErrorNote message={loadError} onRetry={retry} />
+      </div>
     );
-  }
-
-  function startEdit(question: Question) {
-    setEditingId(question.id);
-    setEditDraft(question.answer ?? "");
-  }
-
-  function saveEdit(id: number) {
-    const answer = editDraft.trim();
-    if (!answer) return;
-    setQuestions((prev) => prev.map((q): Question => (q.id === id ? { ...q, answer } : q)));
-    setEditingId(null);
   }
 
   return (
@@ -80,6 +127,8 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {actionError && <p className="inline-error">{actionError}</p>}
+
         <section className="pending-section">
           <h3 className="admin-heading">未回答の質問</h3>
 
@@ -88,16 +137,15 @@ export default function AdminDashboard() {
           ) : (
             pending.map((question) => {
               const draft = drafts[question.id] ?? "";
+              const busy = busyId === question.id;
               return (
                 <article className="pending-card" key={question.id}>
                   <div className="pending-head">
                     <p className="pending-body">{question.body}</p>
-                    <span className="admin-date">{formatDate(question.created_at)}</span>
+                    <span className="admin-date">{formatDateTime(question.created_at)}</span>
                   </div>
 
-                  <label className="visually-hidden" htmlFor={`answer-${question.id}`}>
-                    回答
-                  </label>
+                  <label className="visually-hidden" htmlFor={`answer-${question.id}`}>回答</label>
                   <textarea
                     id={`answer-${question.id}`}
                     className="admin-textarea"
@@ -110,16 +158,21 @@ export default function AdminDashboard() {
                   />
 
                   <div className="admin-actions">
-                    <button className="btn-quiet" type="button" onClick={() => hide(question.id)}>
+                    <button
+                      className="btn-quiet"
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void run(question.id, (p) => hideQuestion(p, question.id))}
+                    >
                       非公開にする
                     </button>
                     <button
                       className="btn-accent"
                       type="button"
-                      disabled={draft.trim().length === 0}
+                      disabled={draft.trim().length === 0 || busy}
                       onClick={() => publish(question.id)}
                     >
-                      回答を公開
+                      {busy ? "保存中…" : "回答を公開"}
                     </button>
                   </div>
                 </article>
@@ -137,9 +190,7 @@ export default function AdminDashboard() {
           >
             <span className="answered-toggle-title">回答済みの質問</span>
             <span className="answered-count">{answered.length}件</span>
-            <span className="answered-toggle-label">
-              {answeredOpen ? "閉じる ▲" : "ひらく ▼"}
-            </span>
+            <span className="answered-toggle-label">{answeredOpen ? "閉じる ▲" : "ひらく ▼"}</span>
           </button>
 
           {answeredOpen && (
@@ -173,10 +224,10 @@ export default function AdminDashboard() {
                           <button
                             className="btn-accent"
                             type="button"
-                            disabled={editDraft.trim().length === 0}
+                            disabled={editDraft.trim().length === 0 || busyId === question.id}
                             onClick={() => saveEdit(question.id)}
                           >
-                            保存する
+                            {busyId === question.id ? "保存中…" : "保存する"}
                           </button>
                         </div>
                       </div>
@@ -191,7 +242,10 @@ export default function AdminDashboard() {
                           <button
                             className="btn-edit"
                             type="button"
-                            onClick={() => startEdit(question)}
+                            onClick={() => {
+                              setEditingId(question.id);
+                              setEditDraft(question.answer ?? "");
+                            }}
                           >
                             編集
                           </button>
@@ -219,7 +273,8 @@ export default function AdminDashboard() {
                     <button
                       className="btn-edit"
                       type="button"
-                      onClick={() => restore(question.id)}
+                      disabled={busyId === question.id}
+                      onClick={() => void run(question.id, (p) => restoreQuestion(p, question.id))}
                     >
                       未回答に戻す
                     </button>

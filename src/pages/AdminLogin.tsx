@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { saveSession, verifyPassword } from "../lib/auth";
+import { login } from "../lib/api";
+import { saveSession } from "../lib/auth";
 import "./Admin.css";
 
 export default function AdminLogin() {
@@ -14,14 +15,18 @@ export default function AdminLogin() {
     if (!password || checking) return;
 
     setChecking(true);
-    const ok = await verifyPassword(password);
-    setChecking(false);
-
-    if (ok) {
-      saveSession(password);
-      navigate("/admin", { replace: true });
-    } else {
-      setError("パスワードが違います");
+    try {
+      const ok = await login(password);
+      if (ok) {
+        saveSession(password);
+        navigate("/admin", { replace: true });
+      } else {
+        setError("パスワードが違います");
+      }
+    } catch {
+      setError("確認できませんでした。通信を確認してください。");
+    } finally {
+      setChecking(false);
     }
   }
 
@@ -49,7 +54,7 @@ export default function AdminLogin() {
         {error && <p className="login-error" role="alert">{error}</p>}
 
         <button className="login-submit" type="submit" disabled={!password || checking}>
-          ログイン
+          {checking ? "確認中…" : "ログイン"}
         </button>
 
         <Link className="login-back" to="/">サイトに戻る</Link>

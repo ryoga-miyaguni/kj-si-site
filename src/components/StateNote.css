@@ -1,0 +1,35 @@
+/* 読み込み中・エラーの共通表示。既存の色変数のみ使う */
+.state-note {
+  margin: 0;
+  padding: 28px 22px;
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--color-text-faint);
+}
+
+.state-error {
+  color: #B0402A;
+}
+
+.state-retry {
+  display: inline-block;
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid rgba(47,58,52,.16);
+  color: var(--color-text-muted);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.state-retry:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* フォーム脇に出す小さなエラー（送信失敗など） */
+.inline-error {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #B0402A;
+}

@@ -1,6 +1,6 @@
 # 教育実習用サイト｜現状整理
 
-最終更新: 2026-08-29
+最終更新: 2026-08-29（Supabase 接続の準備まで完了）
 
 このドキュメントは **実装仕様書（別途）の §2「現在の実装状況」を、実際のコードを読んで検証・更新したもの**です。
 仕様書が「これから何を作るか」を定めるのに対し、こちらは「いま何があるか」を記録します。
@@ -329,7 +329,54 @@ PC（960px〜）の構成:
 
 ---
 
-## 9. Supabase 接続時のマッピング
+## 9. Supabase 接続（進行中）
+
+### 済んでいること（コード側は完了）
+
+| 対象 | 場所 |
+|---|---|
+| テーブル定義 | `supabase/migrations/0001_init.sql` |
+| RLS ポリシー | `supabase/migrations/0002_rls.sql` |
+| Edge Function B1 パスワード照合 | `supabase/functions/admin-auth/` |
+| Edge Function B3 全件取得 | `supabase/functions/admin-read/` |
+| Edge Function B2 書き込み代行 | `supabase/functions/admin-write/` |
+| データアクセス層 | `src/lib/api.ts` |
+| Supabase クライアント | `src/lib/supabase.ts` |
+| 型を新スキーマへ | `src/types.ts`（uuid / ISO 日時 / avatar_url） |
+| 読み込み・エラー表示 | `src/components/StateNote.tsx` |
+| 4画面の非同期化 | 各ページ |
+
+### モックとの自動切り替え
+
+`.env.local` に `VITE_SUPABASE_URL` と `VITE_SUPABASE_ANON_KEY` が入っていれば Supabase を使い、
+**未設定なら `mock.json` をメモリ上で書き換えて動く**（`src/lib/api.ts` の `isSupabaseConfigured`）。
+そのため Supabase 構築の完了を待たずに全画面を触れる。モック時のパスワードは `admin123`。
+
+**画面は `src/lib/api.ts` だけを呼ぶ。** Supabase の呼び出しをページに直接書かないこと。
+
+### 残っていること
+
+| # | 作業 | 担当 |
+|---|---|---|
+| A1 | Supabase プロジェクト作成、URL と anon key を `.env.local` へ | 本人 |
+| A2 | `0001_init.sql` を実行 | 本人 |
+| A3 | `0002_rls.sql` を実行 | 本人 |
+| A4 | Edge Function の環境変数 `ADMIN_PASSWORD` を設定 | 本人 |
+| A5 | `supabase login` → `supabase functions deploy` で3関数をデプロイ | 本人 |
+| C8 | 写真の実アップロード（Storage）。**表示側は実装済み**で、`avatar_url` が入れば出る | 未着手 |
+| D1 | Vercel / Netlify へデプロイ、環境変数設定 | 本人 |
+
+C8 以外のコード側は完了している。A1〜A5 が終われば動くはず（**未検証**）。
+
+### 注意
+
+- `service_role key` は Supabase 側の環境変数にのみ置く。`.env.local` にもフロントにも絶対に書かない
+- `.env` と `.env.local` は `.gitignore` 済み。`.env.example` を雛形として置いてある
+- Edge Function は Deno なので `tsc` / `oxlint` の対象外（`supabase/` は tsconfig の include 外）
+
+---
+
+## 10. スキーマ設計の根拠
 
 **前提：要件定義書（`profile` / `questions` / `answers` の3テーブル設計）は旧版。**
 2026-08-29 に本人へ確認済み。**現在の実装を正とし、DB はそれに合わせて設計する。**
