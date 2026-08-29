@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import AdminNav from "../components/AdminNav";
 import { ErrorNote, Loading } from "../components/StateNote";
-import { fetchProfile, updateProfile } from "../lib/api";
+import {
+  AVATAR_MAX_BYTES,
+  AVATAR_MIME,
+  fetchProfile,
+  updateProfile,
+  uploadAvatar,
+} from "../lib/api";
 import { getSessionPassword } from "../lib/auth";
 import "./Admin.css";
 
@@ -18,6 +24,9 @@ export default function AdminProfile() {
   const [saveError, setSaveError] = useState("");
 
   const [photoName, setPhotoName] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [photoError, setPhotoError] = useState("");
+  const [dragOver, setDragOver] = useState(false);
   const [addingTag, setAddingTag] = useState(false);
   const [tagDraft, setTagDraft] = useState("");
   const [saved, setSaved] = useState(false);
@@ -49,6 +58,31 @@ export default function AdminProfile() {
     setLoading(true);
     void load();
   }, [load]);
+
+  async function handleFile(file: File | undefined) {
+    if (!file || uploading) return;
+
+    if (!AVATAR_MIME.includes(file.type)) {
+      setPhotoError("JPG か PNG を選んでください。");
+      return;
+    }
+    if (file.size > AVATAR_MAX_BYTES) {
+      setPhotoError("5MB 以下の画像を選んでください。");
+      return;
+    }
+
+    setUploading(true);
+    setPhotoError("");
+    try {
+      setAvatarUrl(await uploadAvatar(getSessionPassword() ?? "", file));
+      setPhotoName(file.name);
+      setSaved(false);
+    } catch {
+      setPhotoError("アップロードできませんでした。もう一度お試しください。");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   function removeTag(target: string) {
     setTags((prev) => prev.filter((tag) => tag !== target));
@@ -110,7 +144,19 @@ export default function AdminProfile() {
         <div className="profile-grid">
           <div className="photo-col">
             <span className="field-label">プロフィール写真</span>
-            <div className="dropzone">
+            <div
+              className={dragOver ? "dropzone is-over" : "dropzone"}
+              onDragOver={(event) => {
+                event.preventDefault();
+                setDragOver(true);
+              }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={(event) => {
+                event.preventDefault();
+                setDragOver(false);
+                void handleFile(event.dataTransfer.files[0]);
+              }}
+            >
               <div className="dropzone-photo">
                 {avatarUrl ? (
                   <img className="photo-image" src={avatarUrl} alt="" />
@@ -122,7 +168,11 @@ export default function AdminProfile() {
                 )}
               </div>
               <p className="dropzone-hint">
-                {photoName || (
+                {uploading ? (
+                  "アップロード中…"
+                ) : photoName ? (
+                  photoName
+                ) : (
                   <>
                     ここにドラッグ＆ドロップ
                     <br />
@@ -130,15 +180,16 @@ export default function AdminProfile() {
                   </>
                 )}
               </p>
-              {/* 選択はできるが、実アップロードは次フェーズ（Supabase Storage 接続時） */}
               <label className="btn-outline" htmlFor="photo">ファイルを選ぶ</label>
               <input
                 id="photo"
                 className="visually-hidden"
                 type="file"
                 accept="image/jpeg,image/png"
-                onChange={(event) => setPhotoName(event.target.files?.[0]?.name ?? "")}
+                disabled={uploading}
+                onChange={(event) => void handleFile(event.target.files?.[0])}
               />
+              {photoError && <p className="inline-error">{photoError}</p>}
             </div>
           </div>
 

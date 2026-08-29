@@ -5,6 +5,7 @@
 //   hideQuestion   { questionId }        非公開にする
 //   restoreQuestion{ questionId }        未回答に戻す
 //   updateProfile  { name, headline, bio, tags, avatarUrl? }
+//   createAvatarUploadUrl { path }      署名付きアップロード URL を発行する
 
 import { adminClient, checkPassword, corsHeaders, json } from "../_shared/lib.ts";
 
@@ -66,6 +67,19 @@ Deno.serve(async (req) => {
       const { error } = await supabase.from("profile").update(patch).eq("id", existing.id);
       if (error) return json({ error: error.message }, 500);
       return json({ ok: true });
+    }
+
+    // 画像本体は Edge Function を通さない。ここでは書き込み権限のある
+    // 署名付き URL を発行するだけで、ブラウザはその URL に直接アップロードする
+    case "createAvatarUploadUrl": {
+      const { path } = payload;
+      if (typeof path !== "string" || !path) return json({ error: "invalid payload" }, 400);
+
+      const { data, error } = await supabase
+        .storage.from("avatars").createSignedUploadUrl(path);
+      if (error) return json({ error: error.message }, 500);
+
+      return json({ path: data.path, token: data.token });
     }
 
     default:

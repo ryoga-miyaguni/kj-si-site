@@ -724,3 +724,9 @@ label.btn-outline { display: inline-block; text-align: center; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* ドラッグ中のドロップゾーン */
+.dropzone.is-over {
+  border-color: var(--color-accent);
+  background: rgba(63,127,108,.08);
+}

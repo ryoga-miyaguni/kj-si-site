@@ -152,6 +152,36 @@ export async function restoreQuestion(password: string, questionId: string): Pro
   await callFunction("admin-write", { password, action: "restoreQuestion", questionId });
 }
 
+/** 画像の制限。Storage バケット側の設定と揃えること */
+export const AVATAR_MAX_BYTES = 5 * 1024 * 1024;
+export const AVATAR_MIME = ["image/jpeg", "image/png"];
+
+/**
+ * プロフィール写真をアップロードし、公開 URL を返す。
+ * Edge Function に署名付き URL を発行させ、画像本体はブラウザから直接送る。
+ * （anon キーに書き込み権限を与えないため）
+ */
+export async function uploadAvatar(password: string, file: File): Promise<string> {
+  if (!isSupabaseConfigured || !supabase) {
+    // モック時は保存せず、その場のプレビュー用 URL だけ返す
+    return URL.createObjectURL(file);
+  }
+
+  const ext = file.type === "image/png" ? "png" : "jpg";
+  const path = `avatar-${Date.now()}.${ext}`;
+
+  const { token } = await callFunction<{ path: string; token: string }>("admin-write", {
+    password,
+    action: "createAvatarUploadUrl",
+    path,
+  });
+
+  const { error } = await supabase.storage.from("avatars").uploadToSignedUrl(path, token, file);
+  if (error) throw new ApiError(error.message);
+
+  return supabase.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+}
+
 export async function updateProfile(password: string, profile: Profile): Promise<void> {
   if (!isSupabaseConfigured) {
     mockProfile = { ...profile, tags: [...profile.tags] };
