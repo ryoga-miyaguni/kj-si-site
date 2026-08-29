@@ -335,8 +335,8 @@ PC（960px〜）の構成:
 
 | 対象 | 場所 |
 |---|---|
-| テーブル定義 | `supabase/migrations/0001_init.sql` |
-| RLS ポリシー | `supabase/migrations/0002_rls.sql` |
+| テーブル定義 | `supabase/migrations/20260829000001_init.sql` |
+| RLS ポリシー | `supabase/migrations/20260829000002_rls.sql` |
 | Edge Function B1 パスワード照合 | `supabase/functions/admin-auth/` |
 | Edge Function B3 全件取得 | `supabase/functions/admin-read/` |
 | Edge Function B2 書き込み代行 | `supabase/functions/admin-write/` |
@@ -359,8 +359,8 @@ PC（960px〜）の構成:
 | # | 作業 | 担当 |
 |---|---|---|
 | A1 | Supabase プロジェクト作成、URL と anon key を `.env.local` へ | 本人 |
-| A2 | `0001_init.sql` を実行 | 本人 |
-| A3 | `0002_rls.sql` を実行 | 本人 |
+| A2 | `20260829000001_init.sql` を実行 | 本人 |
+| A3 | `20260829000002_rls.sql` を実行 | 本人 |
 | A4 | Edge Function の環境変数 `ADMIN_PASSWORD` を設定 | 本人 |
 | A5 | `supabase login` → `supabase functions deploy` で3関数をデプロイ | 本人 |
 | C8 | 写真の実アップロード（Storage）。**表示側は実装済み**で、`avatar_url` が入れば出る | 未着手 |

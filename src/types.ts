@@ -1,5 +1,5 @@
 /**
- * データ型定義。Supabase のテーブル定義（supabase/migrations/0001_init.sql）と対応させる。
+ * データ型定義。Supabase のテーブル定義（supabase/migrations/20260829000001_init.sql）と対応させる。
  * mock.json も本番と同じ形（uuid / ISO 日時）で持つ。
  */
 
