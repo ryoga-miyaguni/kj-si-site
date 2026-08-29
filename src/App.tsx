@@ -4,6 +4,7 @@ import Top from "./pages/Top";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProfile from "./pages/AdminProfile";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             </RequireAdmin>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

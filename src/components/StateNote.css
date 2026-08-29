@@ -14,6 +14,7 @@
 
 .state-retry {
   display: inline-block;
+  text-decoration: none;
   margin-top: 10px;
   background: transparent;
   border: 1px solid rgba(47,58,52,.16);
