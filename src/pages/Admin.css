@@ -730,3 +730,25 @@ label.btn-outline { display: inline-block; text-align: center; }
   border-color: var(--color-accent);
   background: rgba(63,127,108,.08);
 }
+
+/* 削除。取り消せない操作なので、他のボタンと色で区別する */
+.btn-danger {
+  background: transparent;
+  border: 1px solid rgba(176,64,42,.35);
+  color: var(--adm-error);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+.btn-danger:hover { background: rgba(176,64,42,.07); }
+.btn-danger:disabled { opacity: .45; cursor: not-allowed; }
+
+.btn-edit.is-danger {
+  border-color: rgba(176,64,42,.3);
+  color: var(--adm-error);
+}
+
+.btn-edit.is-danger:hover { background: rgba(176,64,42,.07); }

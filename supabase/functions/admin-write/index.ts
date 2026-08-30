@@ -5,6 +5,7 @@
 //   hideQuestion   { questionId }        非公開にする
 //   restoreQuestion{ questionId }        未回答に戻す
 //   updateProfile  { name, headline, bio, tags, avatarUrl? }
+//   deleteQuestion { questionId }       質問を完全に削除する（回答も cascade で消える）
 //   createAvatarUploadUrl { path }      署名付きアップロード URL を発行する
 
 import { adminClient, checkPassword, corsHeaders, json } from "../_shared/lib.ts";
@@ -37,6 +38,14 @@ Deno.serve(async (req) => {
         .eq("id", questionId);
       if (statusError) return json({ error: statusError.message }, 500);
 
+      return json({ ok: true });
+    }
+
+    case "deleteQuestion": {
+      if (!questionId) return json({ error: "invalid payload" }, 400);
+      // answers は question_id に on delete cascade が張ってあるので一緒に消える
+      const { error } = await supabase.from("questions").delete().eq("id", questionId);
+      if (error) return json({ error: error.message }, 500);
       return json({ ok: true });
     }
 

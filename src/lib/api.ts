@@ -67,9 +67,12 @@ export async function fetchAnsweredQuestions(): Promise<Question[]> {
   }));
 }
 
+/** 質問本文の上限。DB 側の CHECK 制約と揃えること */
+export const QUESTION_MAX_CHARS = 300;
+
 export async function submitQuestion(body: string): Promise<void> {
   const trimmed = body.trim();
-  if (!trimmed) return;
+  if (!trimmed || [...trimmed].length > QUESTION_MAX_CHARS) return;
 
   if (!isSupabaseConfigured || !supabase) {
     mockQuestions = [
@@ -180,6 +183,15 @@ export async function uploadAvatar(password: string, file: File): Promise<string
   if (error) throw new ApiError(error.message);
 
   return supabase.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+}
+
+/** 質問を完全に削除する。取り消せない */
+export async function deleteQuestion(password: string, questionId: string): Promise<void> {
+  if (!isSupabaseConfigured) {
+    mockQuestions = mockQuestions.filter((q) => q.id !== questionId);
+    return;
+  }
+  await callFunction("admin-write", { password, action: "deleteQuestion", questionId });
 }
 
 export async function updateProfile(password: string, profile: Profile): Promise<void> {

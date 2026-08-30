@@ -1,9 +1,16 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ErrorNote, Loading } from "../components/StateNote";
-import { fetchAnsweredQuestions, fetchProfile, submitQuestion } from "../lib/api";
+import {
+  QUESTION_MAX_CHARS,
+  fetchAnsweredQuestions,
+  fetchProfile,
+  submitQuestion,
+} from "../lib/api";
 import { formatDate } from "../lib/date";
 import type { Profile, Question } from "../types";
 import "./Top.css";
+
+const PAGE_SIZE = 10;
 
 export default function Top() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -15,8 +22,11 @@ export default function Top() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [sendError, setSendError] = useState("");
+  // 回答一覧は10件ずつ表示を広げる
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const canSend = draft.trim().length > 0 && !sending;
+  const charCount = [...draft].length;
+  const canSend = draft.trim().length > 0 && !sending && charCount <= QUESTION_MAX_CHARS;
 
   const load = useCallback(async () => {
     try {
@@ -125,10 +135,14 @@ export default function Top() {
             <textarea
               rows={4}
               value={draft}
+              maxLength={QUESTION_MAX_CHARS}
               placeholder="例）大学の授業ってどんな感じですか？"
               onChange={(event) => setDraft(event.target.value)}
             />
             <div className="submit-row">
+              <span className="char-count">
+                {charCount} / {QUESTION_MAX_CHARS}文字
+              </span>
               <button className="btn-primary" type="submit" disabled={!canSend}>
                 {sending ? "送信中…" : "送信する"}
               </button>
@@ -146,7 +160,7 @@ export default function Top() {
             <p className="empty-note">まだ回答はありません。最初の質問を送ってみてください。</p>
           ) : (
             <div className="qa-list">
-              {answered.map((q) => (
+              {answered.slice(0, visibleCount).map((q) => (
                 <article key={q.id} className="qa-card">
                   <div className="qa-row">
                     <span className="qa-badge q">Q</span>
@@ -159,6 +173,15 @@ export default function Top() {
                   <span className="qa-date">{formatDate(q.created_at)}</span>
                 </article>
               ))}
+              {visibleCount < answered.length && (
+                <button
+                  className="more-button"
+                  type="button"
+                  onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
+                >
+                  もっと見る（残り{answered.length - visibleCount}件）
+                </button>
+              )}
             </div>
           )}
         </section>

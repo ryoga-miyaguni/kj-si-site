@@ -161,7 +161,8 @@
 .submit-row {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: 10px;
 }
 
@@ -300,8 +301,13 @@
 
 /* 狭い画面ではボタンを横いっぱいに */
 @media (max-width: 400px) {
-  .submit-row { display: block; }
+  .submit-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+  }
   .btn-primary { width: 100%; }
+  .char-count { text-align: right; }
 }
 
 /* 送信後のフィードバック（5-1）。文言が無いときも高さを保って行送りが動かないようにする */
@@ -326,4 +332,29 @@
   height: 100%;
   object-fit: cover;
   border-radius: inherit;
+}
+
+/* 入力欄の文字数。maxLength だけだと黙って入力が止まって理由が分からないため出す */
+.char-count {
+  font-size: 12.5px;
+  color: var(--color-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 回答一覧をもっと見る */
+.more-button {
+  width: 100%;
+  margin-top: 4px;
+  background: transparent;
+  border: 1px solid rgba(47,58,52,.16);
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.more-button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }

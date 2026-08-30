@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import AdminNav from "../components/AdminNav";
 import { ErrorNote, Loading } from "../components/StateNote";
 import {
+  deleteQuestion,
   fetchAllQuestions,
   hideQuestion,
   publishAnswer,
@@ -78,6 +79,20 @@ export default function AdminDashboard() {
         return next;
       });
     });
+  }
+
+  /**
+   * 質問を削除する。復元できないので実行前に必ず確認を取る。
+   * 本文を確認文に入れて、意図した1件かどうか目で見て分かるようにする。
+   */
+  function remove(question: Question) {
+    const preview =
+      question.body.length > 40 ? `${question.body.slice(0, 40)}…` : question.body;
+    const ok = window.confirm(
+      `この質問を削除します。\n\n「${preview}」\n\n回答も一緒に消え、元に戻せません。よろしいですか？`,
+    );
+    if (!ok) return;
+    void run(question.id, (p) => deleteQuestion(p, question.id));
   }
 
   function saveEdit(id: string) {
@@ -158,6 +173,14 @@ export default function AdminDashboard() {
                   />
 
                   <div className="admin-actions">
+                    <button
+                      className="btn-danger"
+                      type="button"
+                      disabled={busy}
+                      onClick={() => remove(question)}
+                    >
+                      削除
+                    </button>
                     <button
                       className="btn-quiet"
                       type="button"
@@ -249,6 +272,14 @@ export default function AdminDashboard() {
                           >
                             編集
                           </button>
+                          <button
+                            className="btn-edit is-danger"
+                            type="button"
+                            disabled={busyId === question.id}
+                            onClick={() => remove(question)}
+                          >
+                            削除
+                          </button>
                         </div>
                       </>
                     )}
@@ -277,6 +308,14 @@ export default function AdminDashboard() {
                       onClick={() => void run(question.id, (p) => restoreQuestion(p, question.id))}
                     >
                       未回答に戻す
+                    </button>
+                    <button
+                      className="btn-edit is-danger"
+                      type="button"
+                      disabled={busyId === question.id}
+                      onClick={() => remove(question)}
+                    >
+                      削除
                     </button>
                   </div>
                 </article>
