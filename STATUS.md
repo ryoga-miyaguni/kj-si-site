@@ -297,16 +297,18 @@ PC（960px〜）の構成:
   モックは `answer` を `questions` に埋め込んでいる。**フィールド名ではなく構造の差**なので、
   接続時にここは必ず調整が要る。
 
-## 7. 片付け候補（任意・機能に影響なし）
+## 7. 片付け（2026-08-30 に実施済み）
 
-| 対象 | 内容 |
+| 対象 | 結果 |
 |---|---|
-| `src/App.css` | どこからも import されていないデッドコード。中身は Vite テンプレのままで、存在しない CSS変数（`--accent` `--border` 等）を参照している。削除して問題なし |
-| `src/assets/` | `hero.png` `react.svg` `vite.svg` すべて未使用 |
-| `public/icons.svg` | 未使用（テンプレの残骸） |
-| `public/favicon.svg` | Vite のアイコンのまま。差し替え候補 |
-| `README.md` | Vite テンプレの英語 README のまま。プロジェクトの説明に書き換え候補 |
-| **git 未初期化** | このディレクトリは git リポジトリではありません。**変更を戻せる状態にないため、実装に入る前に `git init` を推奨します** |
+| `src/App.css` | 削除。未インポートのデッドコードだった |
+| `src/assets/`（hero.png / react.svg / vite.svg） | 削除。すべて未使用 |
+| `public/icons.svg` | 削除。未使用 |
+| `README.md` | プロジェクトの説明に書き換え |
+| git 初期化 | 完了。GitHub のプライベートリポジトリに push 済み |
+
+残っているのは `public/favicon.svg` のみ。Vite のアイコンのままなので、
+気が向いたら差し替える（機能には影響しない）。
 
 ---
 
