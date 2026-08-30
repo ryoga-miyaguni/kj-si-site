@@ -108,7 +108,6 @@ export default function TeacherPage() {
     <div className="top-card" style={themeVars(profile.theme)}>
       <header className="top-header">
         <Link className="back-to-list" to="/">← 一覧</Link>
-        <span className="badge">教育実習生</span>
         <h1>{profile.name} です</h1>
         <p>{profile.headline}</p>
       </header>
