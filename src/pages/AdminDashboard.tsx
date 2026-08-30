@@ -187,7 +187,7 @@ export default function AdminDashboard() {
                       disabled={busy}
                       onClick={() => void run(question.id, (p) => hideQuestion(p, question.id))}
                     >
-                      非公開にする
+                      保留にする
                     </button>
                     <button
                       className="btn-accent"
@@ -292,7 +292,7 @@ export default function AdminDashboard() {
 
         {hidden.length > 0 && (
           <section className="hidden-section">
-            <h3 className="admin-heading is-muted">非公開にした質問</h3>
+            <h3 className="admin-heading is-muted">保留中の質問</h3>
             <div className="answered-list">
               {hidden.map((question) => (
                 <article className="answered-card" key={question.id}>

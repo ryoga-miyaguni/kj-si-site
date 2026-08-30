@@ -322,7 +322,7 @@
   color: var(--color-accent);
 }
 
-/* 非公開にした質問。1件以上あるときだけ表示される */
+/* 保留中の質問（DB 上の status は hidden）。1件以上あるときだけ表示される */
 .hidden-section {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,5 @@
 // B3: 管理画面用の全件取得。
-// RLS で anon からは回答済みしか見えないため、未回答・非公開はここを通す。
+// RLS で anon からは回答済みしか見えないため、未回答・保留はここを通す。
 // POST { password } -> { questions: [...] }
 
 import { adminClient, checkPassword, corsHeaders, json } from "../_shared/lib.ts";

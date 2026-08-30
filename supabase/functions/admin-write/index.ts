@@ -2,7 +2,7 @@
 // POST { password, action, ...payload }
 //   publishAnswer  { questionId, body }  未回答に回答をつけて公開
 //   updateAnswer   { questionId, body }  公開済みの回答を編集
-//   hideQuestion   { questionId }        非公開にする
+//   hideQuestion   { questionId }        保留にする（status を hidden に）
 //   restoreQuestion{ questionId }        未回答に戻す
 //   updateProfile  { name, headline, bio, tags, avatarUrl? }
 //   deleteQuestion { questionId }       質問を完全に削除する（回答も cascade で消える）

@@ -3,7 +3,13 @@
  * mock.json も本番と同じ形（uuid / ISO 日時）で持つ。
  */
 
-/** hidden = 管理者が非公開にした質問。公開側の一覧には出ない */
+/**
+ * hidden = 実習生が保留にした質問。画面上の表記は「保留」。
+ *
+ * 未回答の質問はもともと公開されていないため、保留にしても公開状態は変わらない。
+ * 変わるのは「未回答の山から外れる」ことだけ。
+ * DB に入る値は hidden のまま（表記を変えるためだけにデータを移行しない）。
+ */
 export type QuestionStatus = "answered" | "pending" | "hidden";
 
 export type Profile = {

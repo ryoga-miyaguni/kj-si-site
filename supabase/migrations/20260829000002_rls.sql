@@ -21,7 +21,7 @@ create policy questions_insert_anon
   to anon, authenticated
   with check (status = 'pending');
 
--- questions: 閲覧は回答済みのみ。未回答・非公開は anon から見えない
+-- questions: 閲覧は回答済みのみ。未回答・保留（hidden）は anon から見えない
 drop policy if exists questions_select_answered on public.questions;
 create policy questions_select_answered
   on public.questions for select
@@ -29,7 +29,7 @@ create policy questions_select_answered
   using (status = 'answered');
 
 -- answers: 対応する質問が回答済みのときだけ閲覧できる。
--- 回答後に質問を非公開へ変えても回答文が漏れないようにするため
+-- 回答後に質問を保留へ変えても回答文が漏れないようにするため
 drop policy if exists answers_select_published on public.answers;
 create policy answers_select_published
   on public.answers for select
